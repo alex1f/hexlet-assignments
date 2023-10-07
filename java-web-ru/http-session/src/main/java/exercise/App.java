@@ -24,12 +24,12 @@ public final class App {
                 page = Integer.parseInt(rawPage);
                 System.out.println(page);
             }
-            if (page > 1) {
+            if (page > 0) {
                 int leftInclusive = (page -1) * 5;
                 int rightExclusive = leftInclusive + 5;
                 ctx.json(USERS.subList(leftInclusive, rightExclusive));
             } else {
-                ctx.json(USERS);
+                ctx.json(USERS.subList(0, 5));
             }
         }
         );
