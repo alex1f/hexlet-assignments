@@ -24,7 +24,7 @@ public final class App {
                 page = Integer.parseInt(rawPage);
                 System.out.println(page);
             }
-            if (page > 0) {
+            if (page > 1) {
                 int leftInclusive = (page -1) * 5;
                 int rightExclusive = leftInclusive + 5;
                 ctx.json(USERS.subList(leftInclusive, rightExclusive));
