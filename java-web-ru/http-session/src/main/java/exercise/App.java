@@ -22,14 +22,19 @@ public final class App {
             int page = 0;
             if (rawPage != null) {
                 page = Integer.parseInt(rawPage);
-                System.out.println(page);
+            }
+
+            int batchSize = 5;
+            String rawBatchSize = ctx.queryParam("per");
+            if (rawBatchSize != null){
+                batchSize = Integer.parseInt(rawBatchSize);
             }
             if (page > 0) {
-                int leftInclusive = (page -1) * 5;
-                int rightExclusive = leftInclusive + 5;
+                int leftInclusive = (page -1) * batchSize;
+                int rightExclusive = leftInclusive + batchSize;
                 ctx.json(USERS.subList(leftInclusive, rightExclusive));
             } else {
-                ctx.json(USERS.subList(0, 5));
+                ctx.json(USERS.subList(0, batchSize));
             }
         }
         );
