@@ -5,32 +5,28 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 // BEGIN
-public class InMemoryKV implements KeyValueStorage{
-    public Map<String, String> data;
+class InMemoryKV implements KeyValueStorage {
 
-    public InMemoryKV(Map<String, String> data) {
-        this.data = new TreeMap<>();
-        this.data.putAll(data);
+    private Map<String, String> data = new HashMap<>();
+
+    InMemoryKV(Map<String, String> initial) {
+        data.putAll(initial);
     }
 
-    @Override
     public void set(String key, String value) {
         data.put(key, value);
     }
 
-    @Override
     public void unset(String key) {
         data.remove(key);
     }
 
-    @Override
     public String get(String key, String defaultValue) {
         return data.getOrDefault(key, defaultValue);
     }
 
-    @Override
     public Map<String, String> toMap() {
-        return data;
+        return new HashMap<>(data);
     }
 }
 // END

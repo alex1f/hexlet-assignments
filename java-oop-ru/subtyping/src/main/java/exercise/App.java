@@ -2,18 +2,15 @@ package exercise;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 // BEGIN
 public class App {
-    public static void swapKeyValue(KeyValueStorage data) {
-        KeyValueStorage alternative = new InMemoryKV(data.toMap());
-        data.toMap().entrySet().stream().forEach(entry -> {
-            alternative.unset(entry.getKey());
-            alternative.set(entry.getValue(), entry.getKey());
-        });
-
-        data.toMap().clear();
-        alternative.toMap().forEach(data::set);
+    public static void swapKeyValue(KeyValueStorage storage) {
+        Map<String, String> data = storage.toMap();
+        Set<Map.Entry<String, String>> entries = data.entrySet();
+        entries.forEach(entry -> storage.unset(entry.getKey()));
+        entries.forEach(entry -> storage.set(entry.getValue(), entry.getKey()));
     }
 
     public static void main(String[] args) {
