@@ -2,13 +2,14 @@ package exercise;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 // BEGIN
 public class InMemoryKV implements KeyValueStorage{
     public Map<String, String> data;
 
     public InMemoryKV(Map<String, String> data) {
-        this.data = new HashMap<>();
+        this.data = new TreeMap<>();
         this.data.putAll(data);
     }
 
