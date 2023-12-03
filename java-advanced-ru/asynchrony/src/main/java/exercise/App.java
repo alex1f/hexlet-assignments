@@ -18,18 +18,27 @@ class App {
         Path absoluteB = Paths.get(nameB).toAbsolutePath();
         Path absoluteDestination = Paths.get(pathDestination).toAbsolutePath();
 
-        if (!Files.exists(absoluteA)){
-            throw new NoSuchFileException("nameA");
+  /*      if (!Files.exists(absoluteA)){
+            System.out.println("NoSuchFileException");
+           throw new NoSuchFileException("nameA");
         } else if (!Files.exists(absoluteB)) {
-            throw new NoSuchFileException("nameB");
-        }
+            System.out.println("NoSuchFileException");
+           throw new NoSuchFileException("nameB");
+        }*/
         if (!Files.exists(absoluteDestination)){
             Files.createFile(absoluteDestination);
         }
 
         CompletableFuture<String> result = CompletableFuture
                 .supplyAsync(() -> readFile(nameA))
-                .thenCombine(CompletableFuture.supplyAsync(() -> readFile(nameB)), (s1, s2) -> s1 + " " + s2);
+                .exceptionally(ex -> {
+                    System.out.println("NoSuchFileException");
+                    return null;
+                })
+                .thenCombine(CompletableFuture.supplyAsync(() -> readFile(nameB))
+                                .exceptionally(ex -> "NoSuchFileException")
+
+                                , (s1, s2) -> s1 + "\n" + s2);
 
         try (BufferedWriter writer = Files.newBufferedWriter(absoluteDestination)) {
             writer.write(result.get());
@@ -50,11 +59,12 @@ class App {
 
     public static void main(String[] args) throws Exception {
         // BEGIN
-        unionFiles("src/main/resources/file1.txt",
+      CompletableFuture<String> result = unionFiles("src/main/resources/file1.txt",
                 "src/main/resources/file2.txt",
                 "src/main/resources/union.txt");
+        System.out.println(result.get());
 
-        //unionFiles("nonExistingFile", "file", "src/main/resources/test.txt");
+
         // END
     }
 }
